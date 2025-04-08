@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Customer implements Comparable //<Customer>
+public class Customer implements Comparable<Customer>
 {
     private String name;
     private int loyalty;
@@ -11,12 +11,20 @@ public class Customer implements Comparable //<Customer>
     {
         loyalty = 0;
     }
+
     public String getName()
     {
         return name;
     }
 
-    public int CompareTo(Customer a){
+    public int getLoyalty()
+    {
+        return loyalty;
+    }
+    
+    public int compareTo(Customer a) {
         return this.name.compareTo(a.getName());
     }
+
+    
 }
