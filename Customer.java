@@ -9,6 +9,7 @@ public class Customer implements Comparable<Customer>
 
     public Customer(String name)
     {
+        this.name = name;
         loyalty = 0;
     }
 
@@ -21,10 +22,18 @@ public class Customer implements Comparable<Customer>
     {
         return loyalty;
     }
-    
+
+    public void addVehicle(Vehicle v)
+    {
+        ownership.add(v);
+    }
+
+    public ArrayList<Vehicle> getOwnership()
+    {
+        return ownership;
+    }
+
     public int compareTo(Customer a) {
         return this.name.compareTo(a.getName());
     }
-
-    
 }

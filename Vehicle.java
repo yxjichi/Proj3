@@ -1,7 +1,7 @@
-import java.util.Comparator;
-import java.util.Collections;
-import java.security.Provider.Service;
+import java.util.Date;
 import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class Vehicle implements Comparable<Vehicle>
 {
@@ -15,6 +15,7 @@ public class Vehicle implements Comparable<Vehicle>
         this.model = model;
         this.plate = plate;
         this.mileage = mileage;
+        serviceHistory = new ArrayList<Service>();
     }
 
     public int getMileage()
@@ -26,6 +27,45 @@ public class Vehicle implements Comparable<Vehicle>
     {
         this.mileage = mileage;
     }
+
+    public String getModel()
+    {
+        return model;
+    }
+
+    public void setModel(String model)
+    {
+        this.model = model;
+    }
+
+    public String getPlate()
+    {
+        return plate;
+    }
+
+    public ArrayList<Service> getServiceHist()
+    {
+        return serviceHistory;
+    }
+    public void setPlate(String plate)
+    {
+
+    }
+    public void addService(String date)
+    {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        try 
+        {
+            Date d = formatter.parse(date);
+            Service s = new Service(d);
+            serviceHistory.add(s);
+        }
+        catch (ParseException e) {
+            e.printStackTrace();
+        }
+        
+    }
+
     public int compareTo(Vehicle a) {
         return this.mileage - a.getMileage();
     }
