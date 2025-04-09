@@ -48,14 +48,16 @@ public class Vehicle implements Comparable<Vehicle>
         return plate;
     }
 
+    public void setPlate(String plate)
+    {
+        this.plate = plate;
+    }
+    
     public ArrayList<Service> getServiceHist()
     {
         return serviceHistory;
     }
-    public void setPlate(String plate)
-    {
 
-    }
     public void addService(String date)
     {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");

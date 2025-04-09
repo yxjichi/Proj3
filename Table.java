@@ -46,11 +46,28 @@ public class Table {
 
     }
 
-    public void editRow(int index)
+    public void editName(int index, String newName)
     {
         TableRow query = tb.get(index);
+        query.getCustomer().setName(newName);
+    }
 
-        
+    public void editPlate(int index, String newPlate)
+    {
+        TableRow query = tb.get(index);
+        query.getVehicle().setPlate(newPlate);
+    }
+
+    public void editModel(int index, String newModel)
+    {
+        TableRow query = tb.get(index);
+        query.getVehicle().setModel(newModel);
+    }
+
+    public void editMileage(int index, int newMileage)
+    {
+        TableRow query = tb.get(index);
+        query.getVehicle().setMileage(newMileage);
     }
 
     public void sortCust()

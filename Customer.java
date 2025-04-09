@@ -24,6 +24,11 @@ public class Customer implements Comparable<Customer>
         return name;
     }
 
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+    
     public int getLoyalty()
     {
         return loyalty;
