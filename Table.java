@@ -1,7 +1,10 @@
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Table {
@@ -145,7 +148,7 @@ public class Table {
         
     }
 
-/*    private ArrayList<TableRow> loadRows(String pfile)
+    private ArrayList<TableRow> loadRows(String pfile)
     {
         Scanner pscan = null;
         ArrayList<TableRow> plist = new ArrayList<TableRow>();
@@ -153,7 +156,10 @@ public class Table {
         {
             pscan  = new Scanner(new File(pfile));
             this.filename = pfile;
-
+            Customer cursorCust = null;
+            Vehicle cursorVehicle = null;
+            Service cursorService = null;
+            
             while(pscan.hasNext())
             {
                 String [] nextLine = pscan.nextLine().split(" ");
@@ -162,9 +168,55 @@ public class Table {
                 String model = nextLine[3];
                 int mileage = Integer.parseInt(nextLine[4]);
                 String date = nextLine[5];
+
+                Customer c = new Customer(name);
+                Vehicle v = new Vehicle(model, plate, mileage);
+
+                Date d = null;
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                try 
+                {
+                    d = formatter.parse(date);
+                }   
+                catch (ParseException e)
+                {
+                    e.printStackTrace();
+                }
                 
-                TableRow tr = new TableRow(name, age, publish);
-                plist.add(p);
+                Service s = new Service(d);
+
+                if(cursorCust == null)
+                {
+                    cursorCust = c;
+                }
+                if(cursorVehicle == null)
+                {
+                    cursorVehicle = v;
+                }
+                if(cursorService == null)
+                {
+                    cursorService = s;
+                }
+
+                if(c.getName() == cursorCust.getName())
+                {
+                    if(v.getPlate() == cursorVehicle.getPlate())
+                    {
+                        if(s.getId() == cursorService.getId())
+                        {
+
+                        } else {
+                            cursorService = s;
+                        }
+                    } else {
+                        cursorVehicle = v;
+                    }
+                } else {
+                    cursorCust = c;
+                }
+               
+                TableRow tr = new TableRow(c,s,v);
+                plist.add(tr);
             }
 
             pscan.close();
@@ -172,6 +224,6 @@ public class Table {
         catch(IOException e)
         {}
         return plist;
-        */
-
+        
+    }
 }
