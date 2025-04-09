@@ -1,9 +1,14 @@
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Scanner;
 
 public class Table {
     ArrayList<Customer> c;
     ArrayList<TableRow> tb;
+    String filename;
+
     public Table(ArrayList<Customer> c)
     {
         this.c = c;
@@ -139,4 +144,34 @@ public class Table {
         }
         
     }
+
+/*    private ArrayList<TableRow> loadRows(String pfile)
+    {
+        Scanner pscan = null;
+        ArrayList<TableRow> plist = new ArrayList<TableRow>();
+        try
+        {
+            pscan  = new Scanner(new File(pfile));
+            this.filename = pfile;
+
+            while(pscan.hasNext())
+            {
+                String [] nextLine = pscan.nextLine().split(" ");
+                String name = nextLine[0]+ " " + nextLine[1];
+                String plate = nextLine[2];
+                String model = nextLine[3];
+                int mileage = Integer.parseInt(nextLine[4]);
+                String date = nextLine[5];
+                
+                TableRow tr = new TableRow(name, age, publish);
+                plist.add(p);
+            }
+
+            pscan.close();
+        }
+        catch(IOException e)
+        {}
+        return plist;
+        */
+
 }
