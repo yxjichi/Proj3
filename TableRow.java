@@ -9,6 +9,7 @@ public class TableRow
     private String model;
     private int mileage;
     private Date serviceDate;
+    private boolean loyalty;
 
     private Customer cust;
     private Service serv;
@@ -21,6 +22,7 @@ public class TableRow
         this.model = veh.getModel();
         this.mileage = veh.getMileage();
         this.serviceDate = serv.getServiceDate();
+
         this.cust = cust;
         this.serv = serv;
         this.veh = veh;
@@ -65,5 +67,18 @@ public class TableRow
     public Date getServiceDate()
     {
         return serviceDate;
+    }
+
+    public void updateRow()
+    {
+        this.name = cust.getName();
+        this.plate = veh.getPlate();
+        this.model = veh.getModel();
+        this.mileage = veh.getMileage();
+    }
+
+    public String toString()
+    {
+        return getName() + "    " + getModel() + "  " + getPlate() + "  " + getMileage() + "    " +getServiceDate();
     }
 }

@@ -14,6 +14,7 @@ public class Customer implements Comparable<Customer>
         this.name = name;
         loyalty = 0;
         discount = false;
+        ownership = new ArrayList<Vehicle>();
 
         id = nextId;
         nextId++;
@@ -29,12 +30,12 @@ public class Customer implements Comparable<Customer>
         this.name = name;
     }
     
-    public int getLoyalty()
+    public boolean getLoyalty()
     {
-        return loyalty;
+        return discount;
     }
 
-    private void calcLoyalty(int threshold)
+    public void calcLoyalty(int threshold)
     {
         for(Vehicle i: ownership)
         {

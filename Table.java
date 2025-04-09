@@ -1,10 +1,13 @@
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 public class Table {
@@ -12,15 +15,17 @@ public class Table {
     ArrayList<TableRow> tb;
     String filename;
 
-    public Table(ArrayList<Customer> c)
+    public Table(String pfile)
     {
-        this.c = c;
-        tb = new ArrayList<TableRow>();
+        c = new ArrayList<Customer>();
+
+        loadFile(pfile);
         popTableRows();
     }
 
     private void popTableRows()
     {
+        tb = new ArrayList<TableRow>();
         for(Customer i: c ){
             for(Vehicle j: i.getOwnership())
             {
@@ -30,7 +35,18 @@ public class Table {
                     tb.add(row);
                 }
             }
+            i.calcLoyalty(3);
+            //when interlocking with gui, make it so that when a customer is loyal, the background of their text is a special colour
         }
+    }
+
+    public void printTableRows()
+    {
+        for(TableRow i: tb)
+        {
+            System.out.println(i);
+        }
+        System.out.println();
     }
 
     public void deleteRow(int index)
@@ -46,11 +62,12 @@ public class Table {
                     if(s.getId() == query.getService().getId())
                     {
                         i.delService((s));
-                        return;
+                        break;
                     }
                 }
             }
         }
+        popTableRows();
 
     }
 
@@ -58,24 +75,28 @@ public class Table {
     {
         TableRow query = tb.get(index);
         query.getCustomer().setName(newName);
+        popTableRows();
     }
 
     public void editPlate(int index, String newPlate)
     {
         TableRow query = tb.get(index);
         query.getVehicle().setPlate(newPlate);
+        popTableRows();
     }
 
     public void editModel(int index, String newModel)
     {
         TableRow query = tb.get(index);
         query.getVehicle().setModel(newModel);
+        popTableRows();
     }
 
     public void editMileage(int index, int newMileage)
     {
         TableRow query = tb.get(index);
         query.getVehicle().setMileage(newMileage);
+        popTableRows();
     }
 
     public void sortCust()
@@ -127,7 +148,7 @@ public class Table {
     public class ModelCompare implements Comparator<TableRow>{
         public int compare(TableRow a, TableRow b)
         {
-            return a.getPlate().compareTo(b.getPlate());
+            return a.getModel().compareTo(b.getModel());
         }
         
     } 
@@ -148,82 +169,117 @@ public class Table {
         
     }
 
-    private ArrayList<TableRow> loadRows(String pfile)
+    private void loadFile(String pfile)
     {
         Scanner pscan = null;
-        ArrayList<TableRow> plist = new ArrayList<TableRow>();
+        ArrayList<Customer> plist = new ArrayList<Customer>();
         try
         {
             pscan  = new Scanner(new File(pfile));
             this.filename = pfile;
             Customer cursorCust = null;
-            Vehicle cursorVehicle = null;
-            Service cursorService = null;
             
             while(pscan.hasNext())
             {
                 String [] nextLine = pscan.nextLine().split(" ");
+                int length = nextLine.length;
                 String name = nextLine[0]+ " " + nextLine[1];
-                String plate = nextLine[2];
-                String model = nextLine[3];
+                String model = nextLine[2];
+                String plate = nextLine[3];
                 int mileage = Integer.parseInt(nextLine[4]);
-                String date = nextLine[5];
 
-                Customer c = new Customer(name);
-                Vehicle v = new Vehicle(model, plate, mileage);
-
-                Date d = null;
-                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-                try 
+                ArrayList<String> dates = new ArrayList<String>();
+                for(int i = 5; i < length; i++)
                 {
-                    d = formatter.parse(date);
-                }   
-                catch (ParseException e)
-                {
-                    e.printStackTrace();
+                    dates.add(nextLine[i]);
                 }
-                
-                Service s = new Service(d);
 
                 if(cursorCust == null)
                 {
-                    cursorCust = c;
-                }
-                if(cursorVehicle == null)
-                {
-                    cursorVehicle = v;
-                }
-                if(cursorService == null)
-                {
-                    cursorService = s;
-                }
-
-                if(c.getName() == cursorCust.getName())
-                {
-                    if(v.getPlate() == cursorVehicle.getPlate())
-                    {
-                        if(s.getId() == cursorService.getId())
-                        {
-
-                        } else {
-                            cursorService = s;
-                        }
-                    } else {
-                        cursorVehicle = v;
-                    }
+                    cursorCust = new Customer(name);
                 } else {
-                    cursorCust = c;
+                    if(cursorCust.getName().compareTo(name) == 0)
+                    {
+            
+                    } else {
+                        plist.add(cursorCust);
+                        cursorCust = new Customer(name);
+                    }
                 }
-               
-                TableRow tr = new TableRow(c,s,v);
-                plist.add(tr);
+                
+                Vehicle v = new Vehicle(model, plate, mileage);
+
+                for(String i: dates)
+                {
+                    Date d = null;
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                    try 
+                    {
+                        d = formatter.parse(i);
+                    }   
+                    catch (ParseException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    Service s = new Service(d);
+                    v.addService(s);
+                }
+                cursorCust.addVehicle(v);
+                if(!pscan.hasNext())
+                {
+                    plist.add(cursorCust);
+                }
             }
 
             pscan.close();
         }
         catch(IOException e)
         {}
-        return plist;
+        c = plist;
         
+    }
+
+    public void storeFile()
+    {
+        FileWriter writer = null;
+        try
+        {
+            writer  = new FileWriter(new File(filename));
+            for(Customer cust: c)
+            {
+                for(Vehicle v: cust.getOwnership())
+                {
+                    ArrayList<String> serviceDates = new ArrayList<String>();
+
+                    for(Service s: v.getServiceHist())
+                    {
+                        Date d = s.getServiceDate();
+                        Calendar calendar = new GregorianCalendar(); 
+                        calendar.setTime(d);
+                        int year = calendar.get(Calendar.YEAR);
+                        //Add one to month {0 - 11}
+                        int month = calendar.get(Calendar.MONTH) + 1;
+                        int day = calendar.get(Calendar.DAY_OF_MONTH);
+                        serviceDates.add(""+ day + "-" + month + "-" + year);
+                    }
+                    writer.write(cust.getName() + " " + v.getModel() + " " + v.getPlate() + " " + v.getMileage()+ " ");
+                    for(int i = 0; i < serviceDates.size(); i++)
+                    {
+                        if(i == serviceDates.size() - 1)
+                        {
+                            writer.write(serviceDates.get(i));
+                        } else {
+                            writer.write(serviceDates.get(i) + " ");
+                        }
+                        
+                    }
+                    writer.write("\n");
+                }
+            }
+            writer.close();
+        }
+        catch(IOException e)
+        {}
+
     }
 }

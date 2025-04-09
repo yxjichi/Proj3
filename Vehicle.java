@@ -72,7 +72,11 @@ public class Vehicle implements Comparable<Vehicle>
         }
         
     }
-
+    
+    public void addService(Service s)
+    {
+        serviceHistory.add(s);
+    }
     public void delService(Service s)
     {
         serviceHistory.remove(s);
