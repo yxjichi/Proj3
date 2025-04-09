@@ -9,7 +9,6 @@ public class TableRow
     private String model;
     private int mileage;
     private Date serviceDate;
-    private boolean loyalty;
 
     private Customer cust;
     private Service serv;
