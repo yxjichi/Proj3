@@ -26,6 +26,7 @@ public class TableListing extends JPanel
     private JButton     cmdSortMileage;
     private JButton     cmdSortDate;
     private JButton     cmdSortModel;
+    private JButton     cmdShowVisitChart;
 
     private JPanel      pnlCommand;
     private JPanel      pnlDisplay;
@@ -90,6 +91,7 @@ public class TableListing extends JPanel
         cmdSortMileage = new JButton("Sort by Mileage");
         cmdSortDate = new JButton("Sort by Service Date");
         cmdDelete = new JButton("Delete Row");
+        cmdShowVisitChart = new JButton("Show Visit Chart");
         cmdClose = new JButton("Close");
 
         cmdClose.setBackground(Color.PINK);
@@ -97,13 +99,12 @@ public class TableListing extends JPanel
         cmdAddCus.setBackground(Color.PINK);
         cmdAddVehicle.setBackground(Color.PINK);
         cmdAddService.setBackground(Color.PINK);
-
+        cmdShowVisitChart.setBackground(Color.PINK);
         cmdSortModel.setBackground(Color.PINK);
         cmdSortName.setBackground(Color.PINK);
         cmdSortPlate.setBackground(Color.PINK);
         cmdSortMileage.setBackground(Color.PINK);
         cmdSortDate.setBackground(Color.PINK);
-
         cmdEditCus.setBackground(Color.PINK);
 
         cmdDelete.addActionListener(new DeleteButtonListener());
@@ -117,7 +118,8 @@ public class TableListing extends JPanel
         cmdSortMileage.addActionListener(new SortMileageButtonListener());
         cmdSortDate.addActionListener(new SortServiceButtonListener());
         cmdEditCus.addActionListener(new EditButtonListener());
-        
+        cmdShowVisitChart.addActionListener(new ChartButtonListener());
+
         pnlCommand.add(cmdAddCus);
         pnlCommand.add(cmdEditCus);
         pnlCommand.add(cmdAddVehicle);
@@ -128,6 +130,7 @@ public class TableListing extends JPanel
         pnlCommand.add(cmdSortMileage);
         pnlCommand.add(cmdSortDate);
         pnlCommand.add(cmdDelete);
+        pnlCommand.add(cmdShowVisitChart);
         pnlCommand.add(cmdClose);
 
         pnlCommand.setSize(new Dimension(400,1));
@@ -271,6 +274,18 @@ public class TableListing extends JPanel
         public void actionPerformed(ActionEvent e)
         {
             CustomerEdit _ = new CustomerEdit(thisForm);
+        }
+
+    }
+
+    /**
+     * Allows Add button to respond to user choice
+     */
+    private class ChartButtonListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+            BarChart _ = new BarChart(t);
         }
 
     }
