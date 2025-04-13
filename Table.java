@@ -23,7 +23,7 @@ public class Table {
         popTableRows();
     }
 
-    private void popTableRows()
+    public void popTableRows()
     {
         tb = new ArrayList<TableRow>();
         for(Customer i: c ){
@@ -47,6 +47,21 @@ public class Table {
             System.out.println(i);
         }
         System.out.println();
+    }
+
+    public ArrayList<Customer> getCustomerList()
+    {
+        return c;
+    }
+
+    public ArrayList<TableRow> getTableRows()
+    {
+        return tb;
+    }
+
+    public void addCust(Customer cust)
+    {
+        c.add(cust);
     }
 
     public void deleteRow(int index)

@@ -5,8 +5,6 @@ import java.text.SimpleDateFormat;
 
 public class Vehicle implements Comparable<Vehicle>
 {
-    private static int nextId = 0;
-    private int id;
     private String model;
     private String plate;
     private int mileage;
@@ -18,9 +16,6 @@ public class Vehicle implements Comparable<Vehicle>
         this.plate = plate;
         this.mileage = mileage;
         serviceHistory = new ArrayList<Service>();
-
-        id = nextId;
-        nextId++;
     }
 
     public int getMileage()

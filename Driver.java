@@ -4,9 +4,8 @@ public class Driver {
     {
         Table t = new Table("customer.dat");
         t.printTableRows();
-        t.editName(0,"Billy Bob");
 
-        t.sortCust();
+        t.sortModel();
         t.printTableRows();
 
         t.storeFile();
