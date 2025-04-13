@@ -11,63 +11,58 @@ import java.awt.event.ActionEvent;
 public class CustomerEdit extends JFrame 
 {
 
-    private JTextField  txtName;       //name
-    private JTextField  txtAge;     
-    private JTextField model;
-    private JTextField plate;
-    private JTextField mileage;
-    private JTextField date;
+    private JTextField  txtData;       //entered data
+    private JTextField  txtIndex;     
 
-    private JButton     cmdSave;
+    private JButton     cmdName;
+    private JButton     cmdModel;
+    private JButton     cmdPlate;
+    private JButton     cmdMileage;
     private JButton     cmdClose;
-    private JButton     cmdClearAll;
+
     private JPanel      pnlCommand;
     private JPanel      pnlDisplay;
     private TableListing list;
-    private CustomerEdit entry;
+    private CustomerEdit edit;
 
     public CustomerEdit(TableListing list)
     {
-        entry = this;
+        edit = this;
         this.list = list;
 
         setTitle("Edit Customer");
         pnlCommand = new JPanel();
         pnlDisplay = new JPanel();
 
-        pnlDisplay.add(new JLabel("Name:")); 
-        txtName = new JTextField(20);
-        pnlDisplay.add(txtName);
+        pnlDisplay.add(new JLabel("Index:")); 
+        txtIndex = new JTextField(20);
+        pnlDisplay.add(txtIndex);
 
-        pnlDisplay.add(new JLabel("Model"));
-        model = new JTextField(10);
-        pnlDisplay.add(model);
-
-        pnlDisplay.add(new JLabel("Plate"));
-        plate = new JTextField(10);
-        pnlDisplay.add(plate);
-
-        pnlDisplay.add(new JLabel("Mileage:"));
-        mileage = new JTextField(3);
-        pnlDisplay.add(mileage);
-
-        pnlDisplay.add(new JLabel("Service Date"));
-        date = new JTextField(10);
-        pnlDisplay.add(date);
-        
+        pnlDisplay.add(new JLabel("New Data:")); 
+        txtData = new JTextField(20);
+        pnlDisplay.add(txtData);
 
         pnlDisplay.setLayout(new GridLayout(3,4));
        
-        cmdSave    = new JButton("Save");
+        cmdName    = new JButton("Edit Name");
+        cmdModel    = new JButton("Edit Model");
+        cmdPlate    = new JButton("Edit Plate");
+        cmdMileage = new JButton("Edit Mileage");
         cmdClose   = new JButton("Close");
 
-        cmdSave.addActionListener(new SaveButtonListener());
+        cmdName.addActionListener(new NameButtonListener());
+        cmdModel.addActionListener(new ModelButtonListener());
+        cmdPlate.addActionListener(new PlateButtonListener());
+        cmdMileage.addActionListener(new MileageButtonListener());
         cmdClose.addActionListener(new CloseButtonListener());
 
 
-        pnlCommand.add(cmdSave);
+        pnlCommand.add(cmdName);
+        pnlCommand.add(cmdModel);
+        pnlCommand.add(cmdPlate);
+        pnlCommand.add(cmdMileage);
         pnlCommand.add(cmdClose);
-
+        
         add(pnlDisplay, BorderLayout.CENTER);
         add(pnlCommand, BorderLayout.SOUTH);
         pack();
@@ -75,59 +70,83 @@ public class CustomerEdit extends JFrame
     }
 
       /**
-     * Allows Close button to respond to user choice and close the program
+     * Allows Close button to respond to user choice and close the edit screen
      */
     private class CloseButtonListener implements ActionListener
     {
         public void actionPerformed(ActionEvent e)
         {
-            entry.setVisible(false);
+            edit.setVisible(false);
         }
 
     }
 
     /**
-     * Allows Save button to respond to user choice and save the new data
+     * Allows Name button to respond to user choice and save the new data
      */
-    private class SaveButtonListener implements ActionListener
+    private class NameButtonListener implements ActionListener
     {
         public void actionPerformed(ActionEvent e)
         {
-            String[] text = txtName.getText().split(" ");
-            String mod = model.getText();
-            String  plat = plate.getText();
-            int mile = Integer.parseInt(mileage.getText());
-            String dat = date.getText();
+            int i = Integer.parseInt(txtIndex.getText());
+            String name = txtData.getText();
+            
+            list.getTable().editName(i, name);
+            list.refresh();
+        }
+    }
 
-            Pattern datePattern = Pattern.compile("[0-9]{2}-{1}[0-9]{2}-{1}[0-9]{4}$");
-            Matcher match = datePattern.matcher(dat); // string is whatever ur checking for
-
-            if(text.length == 2 && match.matches())
+    /**
+     * Allows Model button to respond to user choice and save the new data
+     */
+    private class ModelButtonListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+            try
             {
-                Customer c = new Customer(text[0]+" "+text[1]);
-                Vehicle v = new Vehicle(mod, plat, mile);
-
-                Date d = null;
-                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-                try 
-                {
-                    d = formatter.parse(dat);
-                }   
-                catch (ParseException f)
-                {
-                    f.printStackTrace();
-                }
-                Service s = new Service(d);
-                v.addService(s);
-                c.getOwnership().add(v);
-
-                list.getTable().addCust(c); ;
-                list.getTable().popTableRows();
-
+                int i = Integer.parseInt(txtIndex.getText());
+                String model = txtData.getText();
+            
+                list.getTable().editModel(i, model);
                 list.refresh();
+
+            } catch(NumberFormatException n) {
+                System.out.println("Number Format Exception");
+                edit.setVisible(false);
             }
-            entry.setVisible(false);           
+            
+        }
+    }
+
+    /**
+     * Allows Mileage button to respond to user choice and save the new data
+     */
+    private class MileageButtonListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+            int i = Integer.parseInt(txtIndex.getText());
+            int mile = Integer.parseInt(txtData.getText());
+            
+            list.getTable().editMileage(i, mile);
+            list.refresh();
         }
 
+    }
+
+    /**
+     * Allows Plate button to respond to user choice and save the new data
+     */
+    private class PlateButtonListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+            int i = Integer.parseInt(txtIndex.getText());
+            String plate = txtData.getText();
+            
+            list.getTable().editPlate(i, plate);
+            list.refresh();
+        }
     }
 }

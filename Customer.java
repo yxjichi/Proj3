@@ -57,6 +57,7 @@ public class Customer implements Comparable<Customer>
      */
     public void calcLoyalty(int threshold)
     {
+        loyalty = 0;
         for(Vehicle i: ownership)
         {
             for(Service _ : i.getServiceHist())
@@ -64,7 +65,7 @@ public class Customer implements Comparable<Customer>
                 loyalty ++;
             }
         }
-        if(loyalty > threshold)
+        if(loyalty >= threshold)
         {
             discount = true;
         }

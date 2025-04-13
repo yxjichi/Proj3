@@ -24,6 +24,8 @@ public class TableListing extends JPanel
 {
     private JButton     cmdAddCus;
     private JButton     cmdEditCus;
+    private JButton     cmdAddVehicle;
+    private JButton     cmdAddService;
     private JButton     cmdClose;
     private JButton     cmdSortPlate;
     private JButton     cmdSortName;
@@ -33,7 +35,6 @@ public class TableListing extends JPanel
 
     private JPanel      pnlCommand;
     private JPanel      pnlDisplay;
-    private ArrayList<TableRow> plist;
     private TableListing thisForm;
     private  JScrollPane scrollPane;
     private Table t;
@@ -48,10 +49,11 @@ public class TableListing extends JPanel
         pnlCommand = new JPanel();
         pnlDisplay = new JPanel();
 
-        Table t = new Table("customer.dat");
+        t = new Table("customer.dat");
         String[] columnNames=  {"First Name",
                 "Last Name",
                 "Model",
+                "Plate",
                 "Mileage",
                 "Service Date",
                 "Discount"};
@@ -63,7 +65,7 @@ public class TableListing extends JPanel
 
                 if (!isRowSelected(row)) {
                     Boolean value = false;
-                    if((getValueAt(row, 6).toString()) == "true"){
+                    if((getValueAt(row, 6).toString()) .equals("true")){
                         value = true;
                     }
                     if (value ==  true) {
@@ -78,7 +80,7 @@ public class TableListing extends JPanel
         };
         showTable(t.getTableRows());
 
-        table.setPreferredScrollableViewportSize(new Dimension(1000, plist.size()*15 +50));
+        table.setPreferredScrollableViewportSize(new Dimension(1000, t.getTableRows().size()*15 +50));
         table.setFillsViewportHeight(true);
 
         scrollPane = new JScrollPane(table);
@@ -101,6 +103,7 @@ public class TableListing extends JPanel
         cmdSortPlate.setBackground(Color.PINK);
         cmdSortMileage.setBackground(Color.PINK);
         cmdSortDate.setBackground(Color.PINK);
+        cmdEditCus.setBackground(Color.PINK);
 
         cmdClose.addActionListener(new CloseButtonListener());
         cmdAddCus.addActionListener(new AddButtonListener() );
@@ -109,7 +112,8 @@ public class TableListing extends JPanel
         cmdSortPlate.addActionListener(new SortPlateButtonListener());
         cmdSortMileage.addActionListener(new SortMileageButtonListener());
         cmdSortDate.addActionListener(new SortServiceButtonListener());
-
+        cmdEditCus.addActionListener(new EditButtonListener());
+        
         pnlCommand.add(cmdAddCus);
         pnlCommand.add(cmdEditCus);
         pnlCommand.add(cmdSortName);
@@ -128,8 +132,14 @@ public class TableListing extends JPanel
         return t;
     }
 
+    public Customer getCust(int index)
+    {
+        return t.getTableRows().get(index).getCustomer();
+    }
+
     public void refresh()
     {
+        model.setRowCount(0);
         showTable(t.getTableRows());
     }
     
@@ -150,7 +160,7 @@ public class TableListing extends JPanel
     {
         String[] name= p.getName().split(" ");
         String[] item={name[0],name[1],""+ p.getModel(),""+p.getPlate(),""+
-                        p.getMileage(),""+ p.getServiceDate(),""+p.getCustomer().getLoyalty()};
+                        p.getMileage(),""+ p.getServiceDate(),""+p.getLoyalty()};
         model.addRow(item);        
 
     }

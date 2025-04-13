@@ -29,6 +29,11 @@ public class TableRow
         // nextNum++;
     }
 
+    public Boolean getLoyalty()
+    {
+        return cust.getLoyalty();
+    }
+
     public Customer getCustomer()
     {
         return cust;

@@ -8,11 +8,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 
-public class CustomerEntry extends JFrame 
+public class VehicleEntry extends JFrame 
 {
 
     private JTextField  txtName;       //name
-    private JTextField  txtAge;     
+    private JTextField  index;     
     private JTextField model;
     private JTextField plate;
     private JTextField mileage;
@@ -24,20 +24,20 @@ public class CustomerEntry extends JFrame
     private JPanel      pnlCommand;
     private JPanel      pnlDisplay;
     private TableListing list;
-    private CustomerEntry entry;
+    private VehicleEntry entry;
 
-    public CustomerEntry(TableListing list)
+    public VehicleEntry(TableListing list)
     {
         entry = this;
         this.list = list;
 
-        setTitle("Entering new Customer");
+        setTitle("Entering new Vehicle");
         pnlCommand = new JPanel();
         pnlDisplay = new JPanel();
 
-        pnlDisplay.add(new JLabel("Name:")); 
-        txtName = new JTextField(20);
-        pnlDisplay.add(txtName);
+        pnlDisplay.add(new JLabel("Customer Index"));
+        index = new JTextField(10);
+        pnlDisplay.add(index);
 
         pnlDisplay.add(new JLabel("Model"));
         model = new JTextField(10);
@@ -93,7 +93,7 @@ public class CustomerEntry extends JFrame
     {
         public void actionPerformed(ActionEvent e)
         {
-            String[] text = txtName.getText().split(" ");
+            int i = Integer.parseInt(index.getText());
             String mod = model.getText();
             String  plat = plate.getText();
             int mile = Integer.parseInt(mileage.getText());
@@ -104,9 +104,9 @@ public class CustomerEntry extends JFrame
 
             System.out.println(match.matches());
 
-            if(text.length == 2 && match.matches())
+            if(match.matches())
             {
-                Customer c = new Customer(text[0]+" "+text[1]);
+                Customer c = list.getCust(i);
                 Vehicle v = new Vehicle(mod, plat, mile);
 
                 Date d = null;
