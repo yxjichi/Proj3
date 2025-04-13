@@ -10,11 +10,19 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 
+/**
+ *  Table Class tabulizes customer data. 
+ *  vehicles owned, and displays loyalty discount.
+ *  */ 
 public class Table {
+    //Data references
     ArrayList<Customer> c;
     ArrayList<TableRow> tb;
     String filename;
-
+    /**
+     * Table Constructor - initializes customer list and populates tablerows
+     * @param pfile filename
+     */
     public Table(String pfile)
     {
         c = new ArrayList<Customer>();
@@ -22,7 +30,10 @@ public class Table {
         loadFile(pfile);
         popTableRows();
     }
-
+    /**
+     * popTableRows() - for each service date, create a new tablerow
+     * and calculate loyalty for the customer
+     */
     public void popTableRows()
     {
         tb = new ArrayList<TableRow>();
@@ -39,16 +50,9 @@ public class Table {
             //when interlocking with gui, make it so that when a customer is loyal, the background of their text is a special colour
         }
     }
-
-    public void printTableRows()
-    {
-        for(TableRow i: tb)
-        {
-            System.out.println(i);
-        }
-        System.out.println();
-    }
-
+    /**
+     * checkNull() - check for null service dates and handle accordingly
+     */
     public void checkNull()
     {
         for(TableRow r: tb)
@@ -66,26 +70,40 @@ public class Table {
             }
         }
     }
-
+    /**
+     * getCustomerList() - return customer data
+     * @return
+     */
     public ArrayList<Customer> getCustomerList()
     {
         return c;
     }
-
+    /**
+     * getTableRows() - return list of tablerows
+     * @return
+     */
     public ArrayList<TableRow> getTableRows()
     {
         return tb;
     }
-
+    /**
+     * addCust() - add new customer to customer list
+     * @param cust customer object
+     */
     public void addCust(Customer cust)
     {
         c.add(cust);
     }
 
+    /**
+     * deleteRow() - deletes specified row from data
+     * @param index specified row #
+     */
     public void deleteRow(int index)
     {
         TableRow query = tb.get(index);
         Customer target = query.getCustomer();
+        //find and delete entry
         for(Vehicle i: target.getOwnership())
         {
             if(i.getPlate().compareTo(query.getPlate()) == 0)
@@ -100,62 +118,90 @@ public class Table {
                 }
             }
         }
+        //repopulate table
         popTableRows();
 
     }
 
+    /**
+     * editName() - change specified name
+     * @param index
+     * @param newName
+     */
     public void editName(int index, String newName)
     {
         TableRow query = tb.get(index);
         query.getCustomer().setName(newName);
         popTableRows();
     }
-
+    /**
+     * editPlate() - change specified plate
+     * @param index
+     * @param newPlate
+     */
     public void editPlate(int index, String newPlate)
     {
         TableRow query = tb.get(index);
         query.getVehicle().setPlate(newPlate);
         popTableRows();
     }
-
+    /**
+     * editModel() - change specified model
+     * @param index
+     * @param newModel
+     */
     public void editModel(int index, String newModel)
     {
         TableRow query = tb.get(index);
         query.getVehicle().setModel(newModel);
         popTableRows();
     }
-
+    /**
+     * editMileage() - change specified mileage
+     * @param index
+     * @param newMileage
+     */
     public void editMileage(int index, int newMileage)
     {
         TableRow query = tb.get(index);
         query.getVehicle().setMileage(newMileage);
         popTableRows();
     }
-
+    /**
+     * sortCust() - sort table by name
+     */
     public void sortCust()
     {
         NameCompare a = new NameCompare();
         tb.sort(a);
     }
-
+    /**
+     * sortPlate() - sort table by plate
+     */
     public void sortPlate()
     {
         PlateCompare a = new PlateCompare();
         tb.sort(a);
     }
-
+    /**
+     * sortModel() - sort table by model
+     */
     public void sortModel()
     {
         ModelCompare a = new ModelCompare();
         tb.sort(a);
     }
-
+    /**
+     * sortMileage() - sort table by mileage
+     */
     public void sortMileage()
     {
         MileageCompare a = new MileageCompare();
         tb.sort(a);
     }
-
+    /**
+     * sortCust() - sort table by name
+     */
     public void sortDate()
     {
         DateCompare a = new DateCompare();
@@ -216,38 +262,46 @@ public class Table {
         
     }
 
+    /**
+     * loadFile() - loads in table data from file
+     * @param pfile file name
+     */
     private void loadFile(String pfile)
     {
         Scanner pscan = null;
         ArrayList<Customer> plist = new ArrayList<Customer>();
         try
         {
+            //initialize
             pscan  = new Scanner(new File(pfile));
             this.filename = pfile;
             Customer cursorCust = null;
-            
+            //while there is more data to be read in
             while(pscan.hasNext())
             {
+                //divy up fields
                 String [] nextLine = pscan.nextLine().split(" ");
                 int length = nextLine.length;
                 String name = nextLine[0]+ " " + nextLine[1];
                 String model = nextLine[2];
                 String plate = nextLine[3];
                 int mileage = Integer.parseInt(nextLine[4]);
-
+                //Collate dates in line
                 ArrayList<String> dates = new ArrayList<String>();
                 for(int i = 5; i < length; i++)
                 {
                     dates.add(nextLine[i]);
                 }
+                //if there is no date add substitute value
                 if(dates.size() == 0)
                 {
                     dates.add("00-00-0000");
                 }
+                //first line
                 if(cursorCust == null)
                 {
                     cursorCust = new Customer(name);
-                } else {
+                } else { //not first line
                     if(cursorCust.getName().compareTo(name) == 0)
                     {
             
@@ -256,9 +310,9 @@ public class Table {
                         cursorCust = new Customer(name);
                     }
                 }
-                
+                //create vehicle object with data read
                 Vehicle v = new Vehicle(model, plate, mileage);
-
+                //for each date add a service object to vehicle
                 for(String i: dates)
                 {
                     Date d = null;
@@ -277,9 +331,12 @@ public class Table {
                     Service s = new Service(d);
                     v.addService(s);
                 }
+                //consolidate populated vehicle into customer object
                 cursorCust.addVehicle(v);
+                //if there is no more to be read
                 if(!pscan.hasNext())
                 {
+                    //add last object into customer list
                     plist.add(cursorCust);
                 }
             }
@@ -288,10 +345,13 @@ public class Table {
         }
         catch(IOException e)
         {}
+        // set table customerlist object to new, populated customerlist
         c = plist;
         
     }
-
+    /**
+     * storeFile() - save current table data to file
+     */
     public void storeFile()
     {
         FileWriter writer = null;
@@ -306,10 +366,11 @@ public class Table {
                 
                     for(Service s: v.getServiceHist())
                     {
-                        if(s.getServiceDate() == null)
+                        if(s.getServiceDate() == null) //if date is null
                         {
+                            // print nothing to line
                             serviceDates.add("");
-                        } else {
+                        } else { //print needed format of date to line
                             System.out.println(v.getPlate());
                             Date d = s.getServiceDate();
                             Calendar calendar = new GregorianCalendar(); 
@@ -321,10 +382,11 @@ public class Table {
                             serviceDates.add(""+ day + "-" + month + "-" + year);
                         }
                     }
-                    
+                    //write current customer data to file
                     writer.write(cust.getName() + " " + v.getModel() + " " + v.getPlate() + " " + v.getMileage()+ " ");
                     for(int i = 0; i < serviceDates.size(); i++)
                     {
+                        //print service dates to file
                         if(i == serviceDates.size() - 1)
                         {
                             writer.write(serviceDates.get(i));
@@ -333,10 +395,10 @@ public class Table {
                         }
                         
                     }
-                    writer.write("\n");
+                    writer.write("\n"); //new line
                 }
             }
-            writer.close();
+            writer.close(); //close filewriter
         }
         catch(IOException e)
         {}

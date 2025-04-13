@@ -53,7 +53,7 @@ public class Customer implements Comparable<Customer>
     /**
      * calcLoyalty() - determines whether customer is eligible for a discount
      * based on service history
-     * @param threshold
+     * @param threshold int
      */
     public void calcLoyalty(int threshold)
     {
@@ -71,16 +71,28 @@ public class Customer implements Comparable<Customer>
         }
     }
 
+    /**
+     * addVehicle() - add vehicle to customer ownership
+     * @param v vehicle object
+     */
     public void addVehicle(Vehicle v)
     {
         ownership.add(v);
     }
 
+    /**
+     * getOwnership() - return customer arraylist of vehicles
+     * @return ownership - arraylist of vehicles
+     */
     public ArrayList<Vehicle> getOwnership()
     {
         return ownership;
     }
 
+    /**
+     * compareTo() - permits sorting and comparison of customer objects
+     * @return integer result of comparison
+     */
     public int compareTo(Customer a) {
         return this.name.compareTo(a.getName());
     }

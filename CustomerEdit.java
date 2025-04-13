@@ -3,23 +3,30 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * CustomerEdit Class - allows user to edit specified field of data
+ */
 public class CustomerEdit extends JFrame 
 {
-
-    private JTextField  txtData;       //entered data
+    //entered data
+    private JTextField  txtData;       
     private JTextField  txtIndex;     
-
-    private JButton     cmdName;
+    //button objects
+    private JButton     cmdName;        
     private JButton     cmdModel;
     private JButton     cmdPlate;
     private JButton     cmdMileage;
     private JButton     cmdClose;
-
-    private JPanel      pnlCommand;
+    //panel objects
+    private JPanel      pnlCommand;      
     private JPanel      pnlDisplay;
+    //references to tablelisting object and class object
     private TableListing list;
     private CustomerEdit edit;
-
+    /**
+     * CustomerEdit Constructor - establises textfields, enables button functionality
+     * @param list TableListing object
+     */
     public CustomerEdit(TableListing list)
     {
         edit = this;

@@ -12,9 +12,13 @@ import javax.swing.table.*;
 
 import java.awt.Color;
 import java.awt.Component;
-
+/**
+ * TableListing Class utilizes Table Object to display customer data, permit user
+ * input, sorting and display bar chart
+ */
 public class TableListing extends JPanel
 {
+    //button objects
     private JButton     cmdAddCus;
     private JButton     cmdEditCus;
     private JButton     cmdAddVehicle;
@@ -27,9 +31,10 @@ public class TableListing extends JPanel
     private JButton     cmdSortDate;
     private JButton     cmdSortModel;
     private JButton     cmdShowVisitChart;
-
+    //panel objects
     private JPanel      pnlCommand;
     private JPanel      pnlDisplay;
+    //reference to tablelisting object
     private TableListing thisForm;
     private  JScrollPane scrollPane;
     private Table t;
@@ -42,7 +47,7 @@ public class TableListing extends JPanel
 
         pnlCommand = new JPanel(new WrapLayout());
         pnlDisplay = new JPanel();
-
+        //populate table
         t = new Table("customer.dat");
         String[] columnNames=  {"First Name",
                 "Last Name",
@@ -52,8 +57,10 @@ public class TableListing extends JPanel
                 "Service Date",
                 "Discount"};
         model=new DefaultTableModel(columnNames,0);
+        //create new table with column names
         JTable table = new JTable(model) {
             @Override
+            //if customer eligible for discount display specified row Colour
             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
                 Component c = super.prepareRenderer(renderer, row, column);
 
@@ -80,7 +87,7 @@ public class TableListing extends JPanel
         scrollPane = new JScrollPane(table);
        
         add(scrollPane);
-
+        //initialize button objects
         cmdAddCus = new JButton("Add Customer");
         cmdEditCus = new JButton("Edit Customer");
         cmdAddVehicle = new JButton("Add Vehicle");
@@ -93,7 +100,7 @@ public class TableListing extends JPanel
         cmdDelete = new JButton("Delete Row");
         cmdShowVisitChart = new JButton("Show Visit Chart");
         cmdClose = new JButton("Close");
-
+        //set color of buttons
         cmdClose.setBackground(Color.PINK);
         cmdDelete.setBackground(Color.PINK);
         cmdAddCus.setBackground(Color.PINK);
@@ -106,7 +113,7 @@ public class TableListing extends JPanel
         cmdSortMileage.setBackground(Color.PINK);
         cmdSortDate.setBackground(Color.PINK);
         cmdEditCus.setBackground(Color.PINK);
-
+        //add action listeners to buttons
         cmdDelete.addActionListener(new DeleteButtonListener());
         cmdClose.addActionListener(new CloseButtonListener());
         cmdAddCus.addActionListener(new AddButtonListener() );
@@ -119,7 +126,7 @@ public class TableListing extends JPanel
         cmdSortDate.addActionListener(new SortServiceButtonListener());
         cmdEditCus.addActionListener(new EditButtonListener());
         cmdShowVisitChart.addActionListener(new ChartButtonListener());
-
+        //add buttons to command pane
         pnlCommand.add(cmdAddCus);
         pnlCommand.add(cmdEditCus);
         pnlCommand.add(cmdAddVehicle);
@@ -134,35 +141,57 @@ public class TableListing extends JPanel
         pnlCommand.add(cmdClose);
 
         pnlCommand.setSize(new Dimension(400,1));
+        //add pane to frame
         add(pnlCommand);
     }
 
-    
+    /**
+     * getTable() - return table object
+     * @return table
+     */
     public Table getTable()
     {
         return t;
     }
-
+    /**
+     * getRow() - return specified tablerow
+     * @param index
+     * @return tablerow
+     */
     public TableRow getRow(int index)
     {
         return t.getTableRows().get(index);
     }
+    /**
+     * getCust() - return specified Customer object
+     * @param index
+     * @return customer object
+     */
     public Customer getCust(int index)
     {
         return t.getTableRows().get(index).getCustomer();
     }
-
+    /**
+     * getVehicle() - return specified vehicle object
+     * @param index
+     * @return vehicle object
+     */
     public Vehicle getVehicle(int index)
     {
         return t.getTableRows().get(index).getVehicle();
     }
-
+    /**
+     * refresh() - reset table and repopulate using tablerows
+     */
     public void refresh()
     {
         model.setRowCount(0);
         showTable(t.getTableRows());
     }
-    
+    /**
+     * showTable() - populate graphic table using tablerowlist
+     * @param plist tablerow arraylist
+     */
     private void showTable(ArrayList<TableRow> plist)
     {
         if (plist.size()>0)
@@ -176,6 +205,10 @@ public class TableListing extends JPanel
         }
             
     }
+    /**
+     * addToTable() - add tablerow to graphic table
+     * @param p tablerow object
+     */
     private void addToTable(TableRow p)
     {
         String[] name= p.getName().split(" ");
@@ -184,7 +217,9 @@ public class TableListing extends JPanel
         model.addRow(item);        
 
     }
-
+    /**
+     * createAndShowGUI() - display window gui
+     */
     private static void createAndShowGUI() {
         //Create and set up the window.
         JFrame frame = new JFrame("List of Customers and Their Service Histories");
