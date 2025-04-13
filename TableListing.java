@@ -19,6 +19,7 @@ public class TableListing extends JPanel
     private JButton     cmdEditCus;
     private JButton     cmdAddVehicle;
     private JButton     cmdAddService;
+    private JButton     cmdDelete;
     private JButton     cmdClose;
     private JButton     cmdSortPlate;
     private JButton     cmdSortName;
@@ -88,9 +89,11 @@ public class TableListing extends JPanel
         cmdSortPlate = new JButton("Sort by Plate");
         cmdSortMileage = new JButton("Sort by Mileage");
         cmdSortDate = new JButton("Sort by Service Date");
+        cmdDelete = new JButton("Delete Row");
         cmdClose = new JButton("Close");
 
         cmdClose.setBackground(Color.PINK);
+        cmdDelete.setBackground(Color.PINK);
         cmdAddCus.setBackground(Color.PINK);
         cmdAddVehicle.setBackground(Color.PINK);
         cmdAddService.setBackground(Color.PINK);
@@ -103,6 +106,7 @@ public class TableListing extends JPanel
 
         cmdEditCus.setBackground(Color.PINK);
 
+        cmdDelete.addActionListener(new DeleteButtonListener());
         cmdClose.addActionListener(new CloseButtonListener());
         cmdAddCus.addActionListener(new AddButtonListener() );
         cmdAddVehicle.addActionListener(new AddVehicleButtonListener() );
@@ -123,6 +127,7 @@ public class TableListing extends JPanel
         pnlCommand.add(cmdSortPlate);
         pnlCommand.add(cmdSortMileage);
         pnlCommand.add(cmdSortDate);
+        pnlCommand.add(cmdDelete);
         pnlCommand.add(cmdClose);
 
         pnlCommand.setSize(new Dimension(400,1));
@@ -135,6 +140,10 @@ public class TableListing extends JPanel
         return t;
     }
 
+    public TableRow getRow(int index)
+    {
+        return t.getTableRows().get(index);
+    }
     public Customer getCust(int index)
     {
         return t.getTableRows().get(index).getCustomer();
@@ -205,8 +214,21 @@ public class TableListing extends JPanel
     {
         public void actionPerformed(ActionEvent e)
         {
+            t.checkNull();
             t.storeFile();
             System.exit(0);
+        }
+
+    }
+
+    /**
+     * Allows Delete button to respond to user choice and close the program
+     */
+    private class DeleteButtonListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+            DeleteEntry _ = new DeleteEntry(thisForm);
         }
 
     }

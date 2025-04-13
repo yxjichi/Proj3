@@ -1,17 +1,11 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 
-public class ServiceEntry extends JFrame 
+public class DeleteEntry extends JFrame 
 {
     private JTextField index;     
-    private JTextField date;
 
     private JButton     cmdSave;
     private JButton     cmdClose;
@@ -20,26 +14,21 @@ public class ServiceEntry extends JFrame
     private JPanel      pnlDisplay;
 
     private TableListing list;
-    private ServiceEntry entry;
+    private DeleteEntry entry;
 
-    public ServiceEntry(TableListing list)
+    public DeleteEntry(TableListing list)
     {
         entry = this;
         this.list = list;
 
-        setTitle("Entering new Service");
+        setTitle("Deleting Entry");
         pnlCommand = new JPanel();
         pnlDisplay = new JPanel();
 
-        pnlDisplay.add(new JLabel("Vehicle Index"));
+        pnlDisplay.add(new JLabel("Index"));
         index = new JTextField(10);
         pnlDisplay.add(index);
-
-        pnlDisplay.add(new JLabel("Service Date"));
-        date = new JTextField(10);
-        pnlDisplay.add(date);
         
-
         pnlDisplay.setLayout(new GridLayout(3,4));
        
         cmdSave    = new JButton("Save");
@@ -78,37 +67,20 @@ public class ServiceEntry extends JFrame
         public void actionPerformed(ActionEvent e)
         {
             int i = Integer.parseInt(index.getText());
-            String dat = date.getText();
+            TableRow r = list.getRow(i);
+            
+            Service s = r.getService();
+            Vehicle v = r.getVehicle();
+            v.delService(s);
 
-            Pattern datePattern = Pattern.compile("[0-9]{1,2}-{1}[0-9]{1,2}-{1}[0-9]{4}$");
-            Matcher match = datePattern.matcher(dat); // string is whatever ur checking for
+            list.getTable().deleteRow(i);
 
-            System.out.println(match.matches());
+            list.getTable().popTableRows();
 
-            if(match.matches())
-            {
-                Vehicle v = list.getVehicle(i);
-
-                Date d = null;
-                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-                try 
-                {
-                    d = formatter.parse(dat);
-                }   
-                catch (ParseException f)
-                {
-                    f.printStackTrace();
-                }
-                Service s = new Service(d);
-                v.addService(s);
-
-                list.getTable().checkNull();
-                list.getTable().popTableRows();
-
-                list.refresh();
-            }
-            entry.setVisible(false);           
+            list.refresh();
+            entry.setVisible(false); 
         }
-
+                      
     }
+
 }

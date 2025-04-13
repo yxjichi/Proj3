@@ -49,6 +49,24 @@ public class Table {
         System.out.println();
     }
 
+    public void checkNull()
+    {
+        for(TableRow r: tb)
+        {
+            Vehicle v = r.getVehicle();
+            if(v.getServiceHist().size() > 1)
+            {
+                for(Service s: v.getServiceHist())
+                {
+                    if(s.getServiceDate() == null)
+                    {
+                        v.delService(s);
+                    }
+                }
+            }
+        }
+    }
+
     public ArrayList<Customer> getCustomerList()
     {
         return c;
@@ -179,6 +197,20 @@ public class Table {
     public class DateCompare implements Comparator<TableRow>{
         public int compare(TableRow a, TableRow b)
         {
+            if(a.getServiceDate() == null)
+            {
+                if(b.getServiceDate() == null)
+                {
+                    return 0;
+                }
+                else {
+                    return -1;
+                }
+            }  else if(b.getServiceDate() == null){
+                if(a.getServiceDate()!=null){
+                    return 1;
+                }
+            }
             return a.getServiceDate().compareTo(b.getServiceDate());
         }
         
@@ -208,7 +240,10 @@ public class Table {
                 {
                     dates.add(nextLine[i]);
                 }
-
+                if(dates.size() == 0)
+                {
+                    dates.add("00-00-0000");
+                }
                 if(cursorCust == null)
                 {
                     cursorCust = new Customer(name);
@@ -227,15 +262,18 @@ public class Table {
                 for(String i: dates)
                 {
                     Date d = null;
-                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-                    try 
+                    if(!i.equals("00-00-0000"))
                     {
-                        d = formatter.parse(i);
-                    }   
-                    catch (ParseException e)
-                    {
-                        e.printStackTrace();
-                    }
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                        try 
+                        {
+                            d = formatter.parse(i);
+                        }   
+                        catch (ParseException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    } 
                     Service s = new Service(d);
                     v.addService(s);
                 }
@@ -265,18 +303,25 @@ public class Table {
                 for(Vehicle v: cust.getOwnership())
                 {
                     ArrayList<String> serviceDates = new ArrayList<String>();
-
+                
                     for(Service s: v.getServiceHist())
                     {
-                        Date d = s.getServiceDate();
-                        Calendar calendar = new GregorianCalendar(); 
-                        calendar.setTime(d);
-                        int year = calendar.get(Calendar.YEAR);
-                        //Add one to month {0 - 11}
-                        int month = calendar.get(Calendar.MONTH) + 1;
-                        int day = calendar.get(Calendar.DAY_OF_MONTH);
-                        serviceDates.add(""+ day + "-" + month + "-" + year);
+                        if(s.getServiceDate() == null)
+                        {
+                            serviceDates.add("");
+                        } else {
+                            System.out.println(v.getPlate());
+                            Date d = s.getServiceDate();
+                            Calendar calendar = new GregorianCalendar(); 
+                            calendar.setTime(d);
+                            int year = calendar.get(Calendar.YEAR);
+                            //Add one to month {0 - 11}
+                            int month = calendar.get(Calendar.MONTH) + 1;
+                            int day = calendar.get(Calendar.DAY_OF_MONTH);
+                            serviceDates.add(""+ day + "-" + month + "-" + year);
+                        }
                     }
+                    
                     writer.write(cust.getName() + " " + v.getModel() + " " + v.getPlate() + " " + v.getMileage()+ " ");
                     for(int i = 0; i < serviceDates.size(); i++)
                     {
