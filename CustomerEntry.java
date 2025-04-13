@@ -11,8 +11,7 @@ import java.awt.event.ActionEvent;
 public class CustomerEntry extends JFrame 
 {
 
-    private JTextField  txtName;       //name
-    private JTextField  txtAge;     
+    private JTextField  txtName;       //name   
     private JTextField model;
     private JTextField plate;
     private JTextField mileage;
@@ -20,7 +19,6 @@ public class CustomerEntry extends JFrame
 
     private JButton     cmdSave;
     private JButton     cmdClose;
-    private JButton     cmdClearAll;
     private JPanel      pnlCommand;
     private JPanel      pnlDisplay;
     private TableListing list;

@@ -8,48 +8,32 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 
-public class VehicleEntry extends JFrame 
+public class ServiceEntry extends JFrame 
 {
-
-    private JTextField  txtName;       //name
-    private JTextField  index;     
-    private JTextField model;
-    private JTextField plate;
-    private JTextField mileage;
+    private JTextField index;     
     private JTextField date;
 
     private JButton     cmdSave;
     private JButton     cmdClose;
-    private JButton     cmdClearAll;
+
     private JPanel      pnlCommand;
     private JPanel      pnlDisplay;
-    private TableListing list;
-    private VehicleEntry entry;
 
-    public VehicleEntry(TableListing list)
+    private TableListing list;
+    private ServiceEntry entry;
+
+    public ServiceEntry(TableListing list)
     {
         entry = this;
         this.list = list;
 
-        setTitle("Entering new Vehicle");
+        setTitle("Entering new Service");
         pnlCommand = new JPanel();
         pnlDisplay = new JPanel();
 
-        pnlDisplay.add(new JLabel("Customer Index"));
+        pnlDisplay.add(new JLabel("Vehicle Index"));
         index = new JTextField(10);
         pnlDisplay.add(index);
-
-        pnlDisplay.add(new JLabel("Model"));
-        model = new JTextField(10);
-        pnlDisplay.add(model);
-
-        pnlDisplay.add(new JLabel("Plate"));
-        plate = new JTextField(10);
-        pnlDisplay.add(plate);
-
-        pnlDisplay.add(new JLabel("Mileage:"));
-        mileage = new JTextField(3);
-        pnlDisplay.add(mileage);
 
         pnlDisplay.add(new JLabel("Service Date"));
         date = new JTextField(10);
@@ -94,9 +78,6 @@ public class VehicleEntry extends JFrame
         public void actionPerformed(ActionEvent e)
         {
             int i = Integer.parseInt(index.getText());
-            String mod = model.getText();
-            String  plat = plate.getText();
-            int mile = Integer.parseInt(mileage.getText());
             String dat = date.getText();
 
             Pattern datePattern = Pattern.compile("[0-9]{1,2}-{1}[0-9]{1,2}-{1}[0-9]{4}$");
@@ -106,8 +87,7 @@ public class VehicleEntry extends JFrame
 
             if(match.matches())
             {
-                Customer c = list.getCust(i);
-                Vehicle v = new Vehicle(mod, plat, mile);
+                Vehicle v = list.getVehicle(i);
 
                 Date d = null;
                 SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -121,9 +101,7 @@ public class VehicleEntry extends JFrame
                 }
                 Service s = new Service(d);
                 v.addService(s);
-                c.getOwnership().add(v);
 
-                list.getTable().addCust(c); ;
                 list.getTable().popTableRows();
 
                 list.refresh();

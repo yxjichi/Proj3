@@ -10,8 +10,6 @@ import java.awt.event.ActionEvent;
 
 public class VehicleEntry extends JFrame 
 {
-
-    private JTextField  txtName;       //name
     private JTextField  index;     
     private JTextField model;
     private JTextField plate;
@@ -20,7 +18,7 @@ public class VehicleEntry extends JFrame
 
     private JButton     cmdSave;
     private JButton     cmdClose;
-    private JButton     cmdClearAll;
+
     private JPanel      pnlCommand;
     private JPanel      pnlDisplay;
     private TableListing list;
@@ -123,7 +121,6 @@ public class VehicleEntry extends JFrame
                 v.addService(s);
                 c.getOwnership().add(v);
 
-                list.getTable().addCust(c); ;
                 list.getTable().popTableRows();
 
                 list.refresh();

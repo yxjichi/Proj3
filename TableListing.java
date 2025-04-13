@@ -4,19 +4,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.util.Scanner;
 import java.util.ArrayList;
-import java.io.File;
-import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.table.*;
 
-import java.util.Comparator;
-import java.util.Collections;
 import java.awt.Color;
 import java.awt.Component;
 
@@ -38,7 +31,6 @@ public class TableListing extends JPanel
     private TableListing thisForm;
     private  JScrollPane scrollPane;
     private Table t;
-    private JTable table;
     private DefaultTableModel model;
 
     public TableListing() 
@@ -46,7 +38,7 @@ public class TableListing extends JPanel
         super(new GridLayout(2,1));
         thisForm = this;
 
-        pnlCommand = new JPanel();
+        pnlCommand = new JPanel(new WrapLayout());
         pnlDisplay = new JPanel();
 
         t = new Table("customer.dat");
@@ -80,7 +72,7 @@ public class TableListing extends JPanel
         };
         showTable(t.getTableRows());
 
-        table.setPreferredScrollableViewportSize(new Dimension(1000, t.getTableRows().size()*15 +50));
+        table.setPreferredScrollableViewportSize(new Dimension(600, t.getTableRows().size()*15 + 20));
         table.setFillsViewportHeight(true);
 
         scrollPane = new JScrollPane(table);
@@ -89,6 +81,8 @@ public class TableListing extends JPanel
 
         cmdAddCus = new JButton("Add Customer");
         cmdEditCus = new JButton("Edit Customer");
+        cmdAddVehicle = new JButton("Add Vehicle");
+        cmdAddService = new JButton("Add Service");
         cmdSortName = new JButton("Sort by Name");
         cmdSortModel = new JButton("Sort by Model");
         cmdSortPlate = new JButton("Sort by Plate");
@@ -98,15 +92,21 @@ public class TableListing extends JPanel
 
         cmdClose.setBackground(Color.PINK);
         cmdAddCus.setBackground(Color.PINK);
+        cmdAddVehicle.setBackground(Color.PINK);
+        cmdAddService.setBackground(Color.PINK);
+
         cmdSortModel.setBackground(Color.PINK);
         cmdSortName.setBackground(Color.PINK);
         cmdSortPlate.setBackground(Color.PINK);
         cmdSortMileage.setBackground(Color.PINK);
         cmdSortDate.setBackground(Color.PINK);
+
         cmdEditCus.setBackground(Color.PINK);
 
         cmdClose.addActionListener(new CloseButtonListener());
         cmdAddCus.addActionListener(new AddButtonListener() );
+        cmdAddVehicle.addActionListener(new AddVehicleButtonListener() );
+        cmdAddService.addActionListener(new AddServiceButtonListener() );
         cmdSortModel.addActionListener(new SortModelButtonListener());
         cmdSortName.addActionListener(new SortNameButtonListener());
         cmdSortPlate.addActionListener(new SortPlateButtonListener());
@@ -116,6 +116,8 @@ public class TableListing extends JPanel
         
         pnlCommand.add(cmdAddCus);
         pnlCommand.add(cmdEditCus);
+        pnlCommand.add(cmdAddVehicle);
+        pnlCommand.add(cmdAddService);
         pnlCommand.add(cmdSortName);
         pnlCommand.add(cmdSortModel);
         pnlCommand.add(cmdSortPlate);
@@ -123,6 +125,7 @@ public class TableListing extends JPanel
         pnlCommand.add(cmdSortDate);
         pnlCommand.add(cmdClose);
 
+        pnlCommand.setSize(new Dimension(400,1));
         add(pnlCommand);
     }
 
@@ -135,6 +138,11 @@ public class TableListing extends JPanel
     public Customer getCust(int index)
     {
         return t.getTableRows().get(index).getCustomer();
+    }
+
+    public Vehicle getVehicle(int index)
+    {
+        return t.getTableRows().get(index).getVehicle();
     }
 
     public void refresh()
@@ -197,6 +205,7 @@ public class TableListing extends JPanel
     {
         public void actionPerformed(ActionEvent e)
         {
+            t.storeFile();
             System.exit(0);
         }
 
@@ -209,7 +218,25 @@ public class TableListing extends JPanel
     {
         public void actionPerformed(ActionEvent e)
         {
-            CustomerEntry p = new CustomerEntry(thisForm);
+            CustomerEntry _ = new CustomerEntry(thisForm);
+        }
+
+    }
+
+    private class AddVehicleButtonListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+            VehicleEntry _ = new VehicleEntry(thisForm);
+        }
+
+    }
+
+    private class AddServiceButtonListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+            ServiceEntry _ = new ServiceEntry(thisForm);
         }
 
     }
@@ -221,7 +248,7 @@ public class TableListing extends JPanel
     {
         public void actionPerformed(ActionEvent e)
         {
-            CustomerEdit p = new CustomerEdit(thisForm);
+            CustomerEdit _ = new CustomerEdit(thisForm);
         }
 
     }

@@ -1,11 +1,6 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 
 public class CustomerEdit extends JFrame 
