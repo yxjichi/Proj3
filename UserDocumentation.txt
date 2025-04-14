@@ -1,0 +1,33 @@
+Mechanic Service Tracker - User Documentation
+Introduction:
+
+	The mechanic user tracker retains customer information:
+	Name + Vehicle Information[Model, Plate, Mileage]
+		+Service History: [Service Dates] + Discount Eligibility
+	These are all shown conveniently to the user in a table in
+	the main screen. 
+		If a customer is eligible for a discount(they've made
+	more than 3 visits), the background of their row(s) will turn
+	pink to distinguish them.
+		Customer Data is read from a file, and new data as well as
+	other changes are saved to this file when the program closes.
+	
+User Functions:
+	Add Customer - The User is able to add a new customer to the table
+	Edit Customer - The User is able to edit a line of customer data by
+					[Name, Model, Plate & Mileage]
+	Add Vehicle - The User is able to a new Vehicle entry to an existing 
+				   customer
+	Add Service - Add a new service date to an existing vehicle
+	
+	Sorting - The User is able to Sort the table by [Name, Model, Plate,
+				Mileage & Service Date]
+	Delete Row - The User is able to delete a specified row of data
+	Show Visits Chart - The User is able to generate a bar chart showing
+					the comparative number of visits between customers
+					in the table.
+	Close - The User is able to close the program certain that any changes
+			they made will persist to the next time they use the program.
+
+Credits:
+	Ramon Byfield
