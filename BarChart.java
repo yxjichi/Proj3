@@ -106,11 +106,9 @@ public class BarChart extends JPanel {
      */
     public void showGUI() {
         JFrame frame = new JFrame("Bar Chart");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(chart);
-        frame.setSize(500, 400);
+        frame.setSize(800, 400);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        
     }
 }
