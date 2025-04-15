@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -358,6 +359,7 @@ public class Table {
         try
         {
             writer  = new FileWriter(new File(filename));
+            Collections.sort(c);
             for(Customer cust: c)
             {
                 for(Vehicle v: cust.getOwnership())
