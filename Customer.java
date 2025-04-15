@@ -94,6 +94,6 @@ public class Customer implements Comparable<Customer>
      * @return integer result of comparison
      */
     public int compareTo(Customer a) {
-        return this.name.compareTo(a.getName());
+        return this.name.toUpperCase().compareTo(a.getName().toUpperCase());
     }
 }

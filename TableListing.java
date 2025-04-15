@@ -264,7 +264,6 @@ public class TableListing extends JPanel
             t.storeFile();
             System.exit(0);
         }
-
     }
 
     /**
