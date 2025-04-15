@@ -49,7 +49,7 @@ public class TableListing extends JPanel
         pnlDisplay = new JPanel();
         //populate table
         t = new Table("customer.dat");
-        String[] columnNames=  {"First Name",
+        String[] columnNames=  {"Index","First Name",
                 "Last Name",
                 "Model",
                 "Plate",
@@ -66,7 +66,7 @@ public class TableListing extends JPanel
 
                 if (!isRowSelected(row)) {
                     Boolean value = false;
-                    if((getValueAt(row, 6).toString()) .equals("true")){
+                    if((getValueAt(row, 7).toString()) .equals("true")){
                         value = true;
                     }
                     if (value ==  true) {
@@ -199,7 +199,7 @@ public class TableListing extends JPanel
             int i = 0;
             while(i < plist.size())
             {
-                addToTable(plist.get(i));
+                addToTable(plist.get(i),i);
                 i++;
             }
         }
@@ -209,12 +209,20 @@ public class TableListing extends JPanel
      * addToTable() - add tablerow to graphic table
      * @param p tablerow object
      */
-    private void addToTable(TableRow p)
+    private void addToTable(TableRow p, int index)
     {
         String[] name= p.getName().split(" ");
-        String[] item={name[0],name[1],""+ p.getModel(),""+p.getPlate(),""+
+        if(name.length == 1)
+        {
+            String[] item={""+index, name[0],"n/a",""+ p.getModel(),""+p.getPlate(),""+
                         p.getMileage(),""+ p.getServiceDate(),""+p.getLoyalty()};
-        model.addRow(item);        
+            model.addRow(item);  
+        } else {
+            String[] item={""+index,name[0],name[1],""+ p.getModel(),""+p.getPlate(),""+
+                        p.getMileage(),""+ p.getServiceDate(),""+p.getLoyalty()};
+            model.addRow(item);  
+        }
+              
 
     }
     /**
@@ -334,9 +342,11 @@ public class TableListing extends JPanel
         {
             t.sortCust();
             model.setRowCount(0);
+            int index = 0;
             for(TableRow i:t.getTableRows())
             {
-                addToTable(i);
+                addToTable(i, index);
+                index++;
             }
         }
 
@@ -351,9 +361,11 @@ public class TableListing extends JPanel
         {
             t.sortModel();
             model.setRowCount(0);
+            int index = 0;
             for(TableRow i:t.getTableRows())
             {
-                addToTable(i);
+                addToTable(i, index);
+                index++;
             }
         }
 
@@ -368,9 +380,11 @@ public class TableListing extends JPanel
         {
             t.sortPlate();
             model.setRowCount(0);
+            int index = 0;
             for(TableRow i:t.getTableRows())
             {
-                addToTable(i);
+                addToTable(i, index);
+                index++;
             }
         }
 
@@ -385,9 +399,11 @@ public class TableListing extends JPanel
         {
             t.sortMileage();
             model.setRowCount(0);
+            int index = 0;
             for(TableRow i:t.getTableRows())
             {
-                addToTable(i);
+                addToTable(i, index);
+                index++;
             }
         }
 
@@ -402,9 +418,11 @@ public class TableListing extends JPanel
         {
             t.sortDate();
             model.setRowCount(0);
+            int index = 0;
             for(TableRow i:t.getTableRows())
             {
-                addToTable(i);
+                addToTable(i, index);
+                index++;
             }
         }
     }

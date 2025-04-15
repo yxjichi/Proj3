@@ -28,6 +28,9 @@ User Functions:
 					in the table.
 	Close - The User is able to close the program certain that any changes
 			they made will persist to the next time they use the program.
+Notes:
+Project is built on and is assumed to work best on java version 23.0.2
+Demonstration can be found in attached video file.
 
 Credits:
-	Ramon Byfield
+	Ramon Byfield 620148505

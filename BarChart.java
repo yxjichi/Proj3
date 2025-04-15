@@ -82,6 +82,7 @@ public class BarChart extends JPanel {
     public void getChartData(Table t)
     {
         //getting arraylist of customers from table
+        t.sortCust();
         ArrayList<Customer> cus = t.getCustomerList();
         //for each customer
         for(Customer c: cus)

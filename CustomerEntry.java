@@ -102,7 +102,13 @@ public class CustomerEntry extends JFrame
             String[] text = txtName.getText().split(" ");
             String mod = model.getText();
             String  plat = plate.getText();
-            int mile = Integer.parseInt(mileage.getText());
+            int mile;
+            if(mileage.getText().equals("") || mileage.getText() == null)
+            {
+                mile = -99999;
+            } else {
+                mile = Integer.parseInt(mileage.getText());
+            }
             String dat = date.getText();
             //checking if the date is in the correct format
             Pattern datePattern = Pattern.compile("[0-9]{1,2}-{1}[0-9]{1,2}-{1}[0-9]{4}$");

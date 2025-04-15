@@ -371,7 +371,6 @@ public class Table {
                             // print nothing to line
                             serviceDates.add("");
                         } else { //print needed format of date to line
-                            System.out.println(v.getPlate());
                             Date d = s.getServiceDate();
                             Calendar calendar = new GregorianCalendar(); 
                             calendar.setTime(d);
